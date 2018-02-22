@@ -4,16 +4,20 @@ using System.Linq.Expressions;
 
 namespace ServiceTracker.Core.Repository
 {
-    public interface IRepository<TEntity> where TEntity : class
+    public interface IRepository
     {
-        TEntity Get(int id);
-        IEnumerable<TEntity> Getall();
-        IEnumerable<TEntity> Getall(Expression<Func<TEntity, bool>> predicate);
+        TEntity Get<TEntity>(int id) where TEntity : class;
+        IEnumerable<TEntity> Getall<TEntity>() where TEntity : class;
+        IEnumerable<TEntity> Getall<TEntity>(Expression<Func<TEntity, bool>> predicate) where TEntity : class;
 
-        void Add(TEntity entity);
-        void AddRange(IEnumerable<TEntity> entities);
+        void Add<TEntity>(TEntity entity) where TEntity : class;
+        void AddRange<TEntity>(IEnumerable<TEntity> entities) where TEntity : class;
 
-        void Remove(TEntity entity);
-        void RemoveRange(IEnumerable<TEntity> entities);
+        void Remove<TEntity>(TEntity entity) where TEntity : class;
+        void RemoveRange<TEntity>(IEnumerable<TEntity> entities) where TEntity : class;
+
+        void Update<TEntity>(TEntity entity) where TEntity : class;
+
+        void Save();
     }
 }

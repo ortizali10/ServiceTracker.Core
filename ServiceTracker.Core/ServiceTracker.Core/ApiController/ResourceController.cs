@@ -1,4 +1,5 @@
 ﻿using ServiceTracker.Core.Repository;
+using ServiceTracker.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,11 @@ namespace ServiceTracker.Core.Controllers
     public class ResourceController : ApiController
     {
         // GET api/<controller>
+        private readonly IQueryService _queryService;
+        public ResourceController(IQueryService queryService)
+        {
+            _queryService = queryService;
+        }
         public IEnumerable<string> Get()
         {
             return new string[] { "value1", "value2" };
@@ -22,20 +28,11 @@ namespace ServiceTracker.Core.Controllers
         }
 
         // POST api/<controller>
-        public void test([FromBody]Customer value)
+        [HttpGet]
+        public IEnumerable<Customer> test()
         {
-           
-            using (var ctx = new ApplicationDbContext())
-            {
-                var cust = new Customer()
-                {
-                    Address = ""
-
-                };
-
-                ctx.Customer.Add(cust);
-                ctx.SaveChanges();
-            }
+            var test = _queryService.GetAllCustomers();
+            return test;
         }
 
         // PUT api/<controller>/5

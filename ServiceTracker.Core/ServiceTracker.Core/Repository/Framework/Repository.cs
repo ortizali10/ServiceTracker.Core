@@ -8,48 +8,60 @@ using System.Web;
 
 namespace ServiceTracker.Core.Repository
 {
-    public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
+    public class Repository<TContext> : IRepository
+    where TContext : DbContext
     {
-        protected readonly ApplicationDbContext _context;
+        protected readonly TContext _context;
 
-        public Repository(ApplicationDbContext context)
+        public Repository(TContext context)
         {
             _context = context;
         }
 
-        public void Add(TEntity entity)
+        public virtual void Add<TEntity>(TEntity entity) where TEntity : class
         {
             _context.Set<TEntity>().Add(entity);
         }
 
-        public void AddRange(IEnumerable<TEntity> entities)
+        public void AddRange<TEntity>(IEnumerable<TEntity> entities) where TEntity : class
         {
             _context.Set<TEntity>().AddRange(entities);
         }
 
-        public TEntity Get(int id)
+        public TEntity Get<TEntity>(int id) where TEntity : class
         {
             return _context.Set<TEntity>().Find(id);
         }
 
-        public IEnumerable<TEntity> Getall()
+        public IEnumerable<TEntity> Getall<TEntity>() where TEntity : class
         {
             return _context.Set<TEntity>().ToList();
         }
 
-        public IEnumerable<TEntity> Getall(Expression<Func<TEntity, bool>> predicate)
+        public IEnumerable<TEntity> Getall<TEntity>(Expression<Func<TEntity, bool>> predicate) where TEntity : class
         {
             return _context.Set<TEntity>().Where(predicate);
         }
 
-        public void Remove(TEntity entity)
+        public void Remove<TEntity>(TEntity entity) where TEntity : class
         {
             _context.Set<TEntity>().Remove(entity);
         }
 
-        public void RemoveRange(IEnumerable<TEntity> entities)
+        public void RemoveRange<TEntity>(IEnumerable<TEntity> entities) where TEntity : class
         {
             _context.Set<TEntity>().RemoveRange(entities);
+        }
+
+        public void Update<TEntity>(TEntity entity) where TEntity : class
+        {
+            _context.Set<TEntity>().Attach(entity);
+            _context.Entry(entity).State = EntityState.Modified;
+        }
+
+        public void Save()
+        {
+            _context.SaveChanges();
         }
     }
 }

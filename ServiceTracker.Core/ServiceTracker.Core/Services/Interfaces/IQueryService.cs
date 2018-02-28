@@ -7,6 +7,8 @@ namespace ServiceTracker.Core.Services
     {
         List<Customer> GetAllCustomers();
         Customer GetCustomer(int id);
-        void AddCustomer(Customer customer);
+        Result AddCustomer(Customer customer);
+        Result UpdateCustomer(int id);
+        Result DeleteCustomer(int id);
     }
 }

@@ -45,7 +45,6 @@ namespace ServiceTracker.Core
 
             // TODO: Register your type's mappings here.
             // container.RegisterType<IProductRepository, ProductRepository>();
-
             container.RegisterType<DbContext, ApplicationDbContext>(new PerThreadLifetimeManager());
             container.RegisterType<IQueryService, QueryService>();
             container.RegisterType<IRepository, Repository<ApplicationDbContext>>();

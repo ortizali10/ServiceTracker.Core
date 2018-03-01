@@ -7,7 +7,7 @@ using System.Web;
 
 namespace ServiceTracker.Core.Repository
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<ExtendedIdentityUser>
     {
         public ApplicationDbContext() : base("name=default")
         {
@@ -27,11 +27,11 @@ namespace ServiceTracker.Core.Repository
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            //modelBuilder.Entity<ExtendedIdentityUser>().ToTable("Users");
-            //modelBuilder.Entity<AppRole>().ToTable("Roles");
-            //modelBuilder.Entity<AppUserLogin>().ToTable("UserLogins");
-            //modelBuilder.Entity<AppUserClaim>().ToTable("UserClaims");
-            //modelBuilder.Entity<IdentityUserRole>().ToTable("UserRoles");
+            modelBuilder.Entity<ExtendedIdentityUser>().ToTable("Users").HasKey(c => c.Id);
+            modelBuilder.Entity<IdentityRole>().ToTable("Roles").HasKey(c => c.Id);
+            modelBuilder.Entity<IdentityUserLogin>().ToTable("UserLogins").HasKey(c => c.UserId);
+            modelBuilder.Entity<IdentityUserClaim>().ToTable("UserClaims").HasKey(c => c.Id);
+            modelBuilder.Entity<IdentityUserRole>().ToTable("UserRoles").HasKey(c => c.UserId);
 
             //modelBuilder.Entity<Customer>().HasRequired(c => c.ContractType);
 
